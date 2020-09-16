@@ -228,6 +228,7 @@ TARGET_LD_SHIM_LIBS := \
     /vendor/lib/hw/camera.msm8953.so|libshims_camera.so
 
 # Treble
+BOARD_VNDK_VERSION := current
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 
