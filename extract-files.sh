@@ -60,9 +60,20 @@ fi
 setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" true "$CLEAN_VENDOR"
 
 extract "$MY_DIR"/proprietary-files.txt "$SRC" "$SECTION"
-extract "$MY_DIR"/proprietary-files-qc.txt "$SRC" "$SECTION"
 
-DEVICE_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"$VENDOR"/"$DEVICE"/proprietary
+DEVICE_BLOB_ROOT="$LINEAGE_ROOT"/vendor/"${VENDOR}"/"${DEVICE}"/proprietary
+
+# Camera data
+for CAMERA_LIB in libmmcamera2_stats_algorithm.so libmmcamera2_q3a_core.so libmmcamera2_cpp_module.so libmmcamera_dbg.so libmmcamera2_pproc_modules.so libmm-qcamera.so libmmcamera_tintless_bg_pca_algo.so libmmcamera_pdaf.so libmmcamera2_stats_modules.so libmmcamera_tintless_algo.so libmmcamera2_iface_modules.so libmmcamera2_dcrf.so libmmcamera_imglib.so libmmcamera2_imglib_modules.so libmmcamera_pdafcamif.so libmmcamera2_mct.so libmmcamera2_sensor_modules.so
+    sed -i "s|/data/misc/camera|/data/vendor/qcam|g" "${DEVICE_BLOB_ROOT}"/vendor/lib/${CAMERA_LIB}
+done
+
+for CAMERA_LIB in camera.msm8953.so
+    sed -i "s|/data/misc/camera|/data/vendor/qcam|g" "${DEVICE_BLOB_ROOT}"/vendor/lib/hw/${CAMERA_LIB}
+done
+
+# Camera socket
+sed -i "s|/data/vendor/camera/cam_socket|/data/vendor/qcam/cam_socket|g" "$DEVICE_BLOB_ROOT"/vendor/bin/mm-qcamera-daemon
 
 # Always set 0 (Off) as CDS mode in iface_util_set_cds_mode
 
